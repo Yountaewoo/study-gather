@@ -4,12 +4,11 @@ import com.example.study_gather.post.dto.CreatePostRequest;
 import com.example.study_gather.post.dto.CreatePostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -18,5 +17,10 @@ public class PostController {
     @PostMapping
     public CreatePostResponse createPost(@RequestBody CreatePostRequest request) {
         return postService.createPost(request);
+    }
+
+    @GetMapping("/{postId}")
+    public PostResponse getDetailPost(@PathVariable Long postId) {
+        return postService.getDetailPost(postId);
     }
 }

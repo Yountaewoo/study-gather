@@ -10,6 +10,7 @@ public record CreatePostRequest(
         String title,
         String content,
         int maximumNumber,
+        int minimumNumber,
         Boolean isOnline,
         LocalDate startDate,
         LocalDate endDate

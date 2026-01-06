@@ -37,11 +37,18 @@ public class PostService {
                 location.getId(),
                 request.title(),
                 request.maximumNumber(),
+                request.minimumNumber(),
                 request.isOnline(),
                 request.content(),
                 request.startDate(),
                 request.endDate()));
 
         return CreatePostResponse.toCreatePostResponse(post);
+    }
+
+    public PostResponse getDetailPost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
+        return PostResponse.toPostResponse(post);
     }
 }

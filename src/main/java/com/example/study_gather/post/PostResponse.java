@@ -1,24 +1,22 @@
-package com.example.study_gather.post.dto;
-
-import com.example.study_gather.post.Post;
-import com.example.study_gather.post.PostService;
+package com.example.study_gather.post;
 
 import java.time.LocalDate;
 
-public record CreatePostResponse(
+public record PostResponse(
         Long postId,
         Long categoryId,
         Long locationId,
         String title,
         String content,
-        int minimumNumber,
         int maximumNumber,
+        int minimumNumber,
         boolean isActive,
         LocalDate startDate,
         LocalDate endDate
 ) {
-    public static CreatePostResponse toCreatePostResponse(Post post) {
-        return new CreatePostResponse(post.getId(),
+    public static PostResponse toPostResponse(Post post) {
+        return new PostResponse(
+                post.getId(),
                 post.getCategoryId(),
                 post.getLocationId(),
                 post.getTitle(),
