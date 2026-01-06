@@ -8,8 +8,8 @@ public record PostResponse(
         Long locationId,
         String title,
         String content,
-        int maxNumber,
-        int minNumber,
+        Integer maxNumber,
+        Integer minNumber,
         boolean isActive,
         LocalDate startDate,
         LocalDate endDate
