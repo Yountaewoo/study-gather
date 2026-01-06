@@ -15,7 +15,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
     @PostMapping
     public CreateCategoryResponse createCategory(@RequestBody CreateCategoryRequest request) {
         return categoryService.createCategory(request);
@@ -24,5 +23,10 @@ public class CategoryController {
     @GetMapping
     public CategoryListResponse getCategoryList() {
         return categoryService.getCategoryList();
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public void deleteCategory(@PathVariable Long categoryId) {
+        categoryService.deleteCategory(categoryId);
     }
 }

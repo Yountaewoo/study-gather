@@ -43,4 +43,13 @@ public class CategoryService {
                 .toList();
         return new CategoryListResponse(categoryResponses);
     }
+
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new NoSuchElementException("해당하는 카테고리가 없습니다.");
+        } else {
+            categoryRepository.deleteById(categoryId);
+        }
+    }
 }
