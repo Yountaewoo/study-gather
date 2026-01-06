@@ -19,9 +19,12 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long parentId;
+
     private String name;
 
-    public Location(String name) {
+    public Location(Long parentId, String name) {
+        this.parentId = parentId;
         this.name = name;
     }
 }
