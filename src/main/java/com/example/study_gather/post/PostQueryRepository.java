@@ -1,6 +1,5 @@
 package com.example.study_gather.post;
 
-import com.example.study_gather.post.dto.FilterPostRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -52,11 +51,11 @@ public class PostQueryRepository {
         if (minNumber == null && maxNumber == null) {
             return null;
         } else if (minNumber == null && maxNumber != null) {
-            return post.minimumNumber.goe(Integer.MIN_VALUE).and(post.maximumNumber.loe(maxNumber));
+            return post.minNumber.goe(Integer.MIN_VALUE).and(post.maxNumber.loe(maxNumber));
         } else if (minNumber != null && maxNumber == null) {
-            return post.minimumNumber.goe(minNumber).and(post.maximumNumber.loe(Integer.MAX_VALUE));
+            return post.minNumber.goe(minNumber).and(post.maxNumber.loe(Integer.MAX_VALUE));
         }
-        return post.minimumNumber.goe(minNumber).and(post.maximumNumber.loe(maxNumber));
+        return post.minNumber.goe(minNumber).and(post.maxNumber.loe(maxNumber));
     }
 
     private BooleanExpression findByIsOnline(Boolean isOnline) {
