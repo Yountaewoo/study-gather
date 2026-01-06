@@ -19,9 +19,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long parentId;
+
     private String name;
 
-    public Category(String name) {
+    public Category(Long parentId, String name) {
+        this.parentId = parentId;
         this.name = name;
     }
 }

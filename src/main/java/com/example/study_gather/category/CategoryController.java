@@ -1,0 +1,25 @@
+package com.example.study_gather.category;
+
+import com.example.study_gather.category.dto.CreateCategoryRequest;
+import com.example.study_gather.category.dto.CreateCategoryResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Slf4j
+@RequiredArgsConstructor
+@RequestMapping("/api/categories")
+public class CategoryController {
+
+    private final CategoryService categoryService;
+
+
+    @PostMapping
+    public CreateCategoryResponse createCategory(@RequestBody CreateCategoryRequest request) {
+        return categoryService.createCategory(request);
+    }
+}
