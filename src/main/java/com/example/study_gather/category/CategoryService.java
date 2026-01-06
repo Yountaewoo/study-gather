@@ -1,5 +1,6 @@
 package com.example.study_gather.category;
 
+import com.example.study_gather.category.dto.CategoryListResponse;
 import com.example.study_gather.category.dto.CreateCategoryRequest;
 import com.example.study_gather.category.dto.CreateCategoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -31,5 +33,14 @@ public class CategoryService {
         }
     }
 
-
+    public CategoryListResponse getCategoryList() {
+        List<CategoryResponse> categoryResponses = categoryRepository.findAll()
+                .stream()
+                .map(category -> new CategoryResponse(
+                        category.getId(),
+                        category.getParentId(),
+                        category.getName()))
+                .toList();
+        return new CategoryListResponse(categoryResponses);
+    }
 }

@@ -1,13 +1,11 @@
 package com.example.study_gather.category;
 
+import com.example.study_gather.category.dto.CategoryListResponse;
 import com.example.study_gather.category.dto.CreateCategoryRequest;
 import com.example.study_gather.category.dto.CreateCategoryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -21,5 +19,10 @@ public class CategoryController {
     @PostMapping
     public CreateCategoryResponse createCategory(@RequestBody CreateCategoryRequest request) {
         return categoryService.createCategory(request);
+    }
+
+    @GetMapping
+    public CategoryListResponse getCategoryList() {
+        return categoryService.getCategoryList();
     }
 }
