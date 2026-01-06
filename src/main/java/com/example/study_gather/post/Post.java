@@ -19,7 +19,7 @@ public class Post {
     private Long id;
 
     @Column(nullable = false)
-    private Long boardId;
+    private Long memberId;
 
     @Column(nullable = false)
     private Long categoryId;
@@ -34,6 +34,10 @@ public class Post {
 
     private int maximumNumber;
 
+    private int minimumNumber;
+
+    private Boolean isOnline;
+
     @Column(nullable = false)
     private Boolean isActive;
 
@@ -43,12 +47,12 @@ public class Post {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    public Post(Long boardId, Long categoryId, Long locationId, String title, int maximumNumber,
+    public Post(Long categoryId, Long locationId, String title, int maximumNumber, Boolean isOnline,
                 String content, LocalDate startDate, LocalDate endDate) {
-        this.boardId = boardId;
         this.categoryId = categoryId;
         this.locationId = locationId;
         this.title = title;
+        this.isOnline = isOnline;
         this.maximumNumber = maximumNumber;
         this.content = content;
         this.startDate = startDate;

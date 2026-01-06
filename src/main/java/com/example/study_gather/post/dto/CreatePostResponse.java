@@ -8,7 +8,6 @@ import java.time.LocalDate;
 public record CreatePostResponse(
         Long postId,
         Long categoryId,
-        Long boardId,
         Long locationId,
         String title,
         String content,
@@ -20,7 +19,6 @@ public record CreatePostResponse(
     public static CreatePostResponse toCreatePostResponse(Post post) {
         return new CreatePostResponse(post.getId(),
                 post.getCategoryId(),
-                post.getBoardId(),
                 post.getLocationId(),
                 post.getTitle(),
                 post.getContent(),
