@@ -8,8 +8,8 @@ public record PostResponse(
         Long locationId,
         String title,
         String content,
-        int maximumNumber,
-        int minimumNumber,
+        int maxNumber,
+        int minNumber,
         boolean isActive,
         LocalDate startDate,
         LocalDate endDate
@@ -21,8 +21,8 @@ public record PostResponse(
                 post.getLocationId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getMaximumNumber(),
-                post.getMinimumNumber(),
+                post.getMaxNumber(),
+                post.getMinNumber(),
                 post.getIsActive(),
                 post.getStartDate(),
                 post.getEndDate());

@@ -9,8 +9,8 @@ public record CreatePostRequest(
         Long locationId,
         String title,
         String content,
-        int maximumNumber,
-        int minimumNumber,
+        int maxNumber,
+        int minNumber,
         Boolean isOnline,
         LocalDate startDate,
         LocalDate endDate

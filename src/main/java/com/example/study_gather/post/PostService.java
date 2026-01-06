@@ -6,13 +6,14 @@ import com.example.study_gather.location.Location;
 import com.example.study_gather.location.LocationRepository;
 import com.example.study_gather.post.dto.CreatePostRequest;
 import com.example.study_gather.post.dto.CreatePostResponse;
-import com.example.study_gather.post.dto.SearchPostRequest;
-import com.example.study_gather.post.dto.SearchPostResponse;
+import com.example.study_gather.post.dto.FilterPostRequest;
+import com.example.study_gather.post.dto.FilterPostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -24,6 +25,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final LocationRepository locationRepository;
     private final CategoryRepository categoryRepository;
+    private final PostQueryRepository postQueryRepository;
 
     @Transactional
     public CreatePostResponse createPost(CreatePostRequest request) {
@@ -36,8 +38,8 @@ public class PostService {
                 category.getId(),
                 location.getId(),
                 request.title(),
-                request.maximumNumber(),
-                request.minimumNumber(),
+                request.maxNumber(),
+                request.minNumber(),
                 request.isOnline(),
                 request.content(),
                 request.startDate(),
@@ -50,5 +52,20 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
         return PostResponse.toPostResponse(post);
+    }
+
+    public FilterPostResponse filterPost(List<Long> locationIds,
+                                         List<Long> categoryIds,
+                                         Integer minNumber,
+                                         Integer maxNumber,
+                                         Boolean isOnline) {
+        List<Post> posts = postQueryRepository.searchPost(locationIds, categoryIds, minNumber, maxNumber, isOnline);
+        List<PostResponse> postResponseList = posts.stream()
+                .map(post -> {
+                    PostResponse postResponse = PostResponse.toPostResponse(post);
+                    return postResponse;
+                })
+                .toList();
+        return new FilterPostResponse(postResponseList);
     }
 }

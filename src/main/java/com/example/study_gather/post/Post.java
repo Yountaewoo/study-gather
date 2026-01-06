@@ -32,9 +32,9 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    private int maximumNumber;
+    private Integer maxNumber;
 
-    private int minimumNumber;
+    private Integer minNumber;
 
     private Boolean isOnline;
 
@@ -47,14 +47,14 @@ public class Post {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    public Post(Long categoryId, Long locationId, String title, int maximumNumber, int minimumNumber, Boolean isOnline,
+    public Post(Long categoryId, Long locationId, String title, Integer maxNumber, Integer minNumber, Boolean isOnline,
                 String content, LocalDate startDate, LocalDate endDate) {
         this.categoryId = categoryId;
         this.locationId = locationId;
         this.title = title;
         this.isOnline = isOnline;
-        this.maximumNumber = maximumNumber;
-        this.minimumNumber = minimumNumber;
+        this.maxNumber = maxNumber;
+        this.minNumber = minNumber;
         this.content = content;
         this.startDate = startDate;
         this.isActive = true;

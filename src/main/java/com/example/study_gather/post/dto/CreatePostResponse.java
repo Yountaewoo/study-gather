@@ -1,7 +1,6 @@
 package com.example.study_gather.post.dto;
 
 import com.example.study_gather.post.Post;
-import com.example.study_gather.post.PostService;
 
 import java.time.LocalDate;
 
@@ -11,8 +10,8 @@ public record CreatePostResponse(
         Long locationId,
         String title,
         String content,
-        int minimumNumber,
-        int maximumNumber,
+        int minNumber,
+        int maxNumber,
         boolean isActive,
         LocalDate startDate,
         LocalDate endDate
@@ -23,8 +22,8 @@ public record CreatePostResponse(
                 post.getLocationId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getMaximumNumber(),
-                post.getMinimumNumber(),
+                post.getMaxNumber(),
+                post.getMinNumber(),
                 post.getIsActive(),
                 post.getStartDate(),
                 post.getEndDate());
