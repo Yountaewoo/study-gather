@@ -22,9 +22,11 @@ public class Location extends BaseEntity {
 
     private Long parentId;
 
+    private Long memberId;
+
     private String name;
 
-    public Location(Long parentId, String name) {
+    public Location(Long parentId, Long memberId, String name) {
         this.parentId = parentId;
         this.name = name;
     }

@@ -25,12 +25,12 @@ public class LocationService {
                 () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
         member.validateAdminPermission();
         if (request.parentId() == null) {
-            Location location = locationRepository.save(new Location(request.parentId(), request.name()));
+            Location location = locationRepository.save(new Location(request.parentId(), member.getId(), request.name()));
             return new CreateLocationResponse(location.getId(), location.getParentId(), location.getName());
         } else {
             Location parentLocation = locationRepository.findById(request.parentId()).orElseThrow(
                     () -> new NoSuchElementException("해당하는 지역이 없습니다."));
-            Location location = locationRepository.save(new Location(request.parentId(), request.name()));
+            Location location = locationRepository.save(new Location(request.parentId(), member.getId(), request.name()));
             return new CreateLocationResponse(location.getId(), location.getParentId(), location.getName());
         }
     }
