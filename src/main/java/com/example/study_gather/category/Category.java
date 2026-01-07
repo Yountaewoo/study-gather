@@ -1,6 +1,6 @@
 package com.example.study_gather.category;
 
-import com.example.study_gather.common.BaseEntity;
+import com.example.study_gather.common.config.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

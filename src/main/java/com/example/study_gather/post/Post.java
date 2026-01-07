@@ -1,6 +1,6 @@
 package com.example.study_gather.post;
 
-import com.example.study_gather.common.BaseEntity;
+import com.example.study_gather.common.config.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
