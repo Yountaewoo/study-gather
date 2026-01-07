@@ -3,6 +3,8 @@ package com.example.study_gather.category;
 import com.example.study_gather.category.dto.CategoryListResponse;
 import com.example.study_gather.category.dto.CreateCategoryRequest;
 import com.example.study_gather.category.dto.CreateCategoryResponse;
+import com.example.study_gather.member.Member;
+import com.example.study_gather.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,17 +20,20 @@ import java.util.NoSuchElementException;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public CreateCategoryResponse createCategory(CreateCategoryRequest request) {
+    public CreateCategoryResponse createCategory(CreateCategoryRequest request, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+        member.validateAdminPermission();
         if (request.parentId() == null) {
-            Category category = categoryRepository.save(new Category(null, request.name()));
+            Category category = categoryRepository.save(new Category(null, memberId, request.name()));
             return new CreateCategoryResponse(category.getId(), category.getParentId(), category.getName());
         } else {
             Category parentCategory = categoryRepository.findById(request.parentId()).orElseThrow(
                     () -> new NoSuchElementException("해당하는 부모 카테고리가 존재하지 않습니다."));
-            Category category = categoryRepository.save(new Category(request.parentId(), request.name()));
+            Category category = categoryRepository.save(new Category(request.parentId(), memberId, request.name()));
             return new CreateCategoryResponse(category.getId(), category.getParentId(), category.getName());
         }
     }
@@ -45,7 +50,10 @@ public class CategoryService {
     }
 
     @Transactional
-    public void deleteCategory(Long categoryId) {
+    public void deleteCategory(Long categoryId, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+        member.validateAdminPermission();
         if (!categoryRepository.existsById(categoryId)) {
             throw new NoSuchElementException("해당하는 카테고리가 없습니다.");
         } else {

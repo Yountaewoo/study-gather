@@ -4,6 +4,8 @@ import com.example.study_gather.category.Category;
 import com.example.study_gather.category.CategoryRepository;
 import com.example.study_gather.location.Location;
 import com.example.study_gather.location.LocationRepository;
+import com.example.study_gather.member.Member;
+import com.example.study_gather.member.MemberRepository;
 import com.example.study_gather.post.dto.CreatePostRequest;
 import com.example.study_gather.post.dto.CreatePostResponse;
 import com.example.study_gather.post.dto.FilterPostRequest;
@@ -26,9 +28,14 @@ public class PostService {
     private final LocationRepository locationRepository;
     private final CategoryRepository categoryRepository;
     private final PostQueryRepository postQueryRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public CreatePostResponse createPost(CreatePostRequest request) {
+    public CreatePostResponse createPost(CreatePostRequest request, Long memberId) {
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+        member.validateAdminPermission();
         Category category = categoryRepository.findById(request.categoryId()).orElseThrow(
                 () -> new NoSuchElementException("해당하는 카테고리가 없습니다."));
         Location location = locationRepository.findById(request.locationId()).orElseThrow(
@@ -36,6 +43,7 @@ public class PostService {
 
         Post post = postRepository.save(new Post(
                 category.getId(),
+                member.getId(),
                 location.getId(),
                 request.title(),
                 request.maxNumber(),

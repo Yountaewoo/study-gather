@@ -20,12 +20,15 @@ public class Category extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long memberId;
+
     private Long parentId;
 
     private String name;
 
-    public Category(Long parentId, String name) {
+    public Category(Long parentId, Long memberId, String name) {
         this.parentId = parentId;
+        this.memberId = memberId;
         this.name = name;
     }
 }

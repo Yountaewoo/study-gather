@@ -1,10 +1,12 @@
 package com.example.study_gather.post;
 
+import com.example.study_gather.common.security.JwtProvider;
 import com.example.study_gather.post.dto.CreatePostRequest;
 import com.example.study_gather.post.dto.CreatePostResponse;
 import com.example.study_gather.post.dto.FilterPostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +20,9 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public CreatePostResponse createPost(@RequestBody CreatePostRequest request) {
-        return postService.createPost(request);
+    public CreatePostResponse createPost(@RequestBody CreatePostRequest request, @AuthenticationPrincipal JwtProvider.JwtUserPrincipal principal) {
+        Long memberId = principal.getMemberId();
+        return postService.createPost(request, memberId);
     }
 
     @GetMapping("/{postId}")

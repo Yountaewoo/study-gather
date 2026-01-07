@@ -48,9 +48,10 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    public Post(Long categoryId, Long locationId, String title, Integer maxNumber, Integer minNumber, Boolean isOnline,
+    public Post(Long categoryId, Long memberId, Long locationId, String title, Integer maxNumber, Integer minNumber, Boolean isOnline,
                 String content, LocalDate startDate, LocalDate endDate) {
         this.categoryId = categoryId;
+        this.memberId = memberId;
         this.locationId = locationId;
         this.title = title;
         this.isOnline = isOnline;
