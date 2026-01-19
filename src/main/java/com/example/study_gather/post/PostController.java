@@ -31,11 +31,11 @@ public class PostController {
     }
 
     @GetMapping
-    public FilterPostResponse filterPost(@RequestParam List<Long> locationIds,
-                                         @RequestParam List<Long> categoryIds,
-                                         @RequestParam Integer minNumber,
-                                         @RequestParam Integer maxNumber,
-                                         @RequestParam Boolean isOnline) {
+    public FilterPostResponse filterPost(@RequestParam(required = false) List<Long> locationIds,
+                                         @RequestParam(required = false) List<Long> categoryIds,
+                                         @RequestParam(required = false) Integer minNumber,
+                                         @RequestParam(required = false) Integer maxNumber,
+                                         @RequestParam(required = false) Boolean isOnline) {
         return postService.filterPost(locationIds, categoryIds, minNumber, maxNumber, isOnline);
     }
 }
