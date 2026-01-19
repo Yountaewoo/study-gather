@@ -4,6 +4,7 @@ import com.example.study_gather.common.security.JwtProvider;
 import com.example.study_gather.post.dto.CreatePostRequest;
 import com.example.study_gather.post.dto.CreatePostResponse;
 import com.example.study_gather.post.dto.FilterPostResponse;
+import com.example.study_gather.post.dto.PostDetailResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostResponse getDetailPost(@PathVariable Long postId) {
+    public PostDetailResponse getDetailPost(@PathVariable Long postId) {
         return postService.getDetailPost(postId);
     }
 

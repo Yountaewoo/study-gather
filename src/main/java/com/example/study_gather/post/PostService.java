@@ -1,15 +1,15 @@
 package com.example.study_gather.post;
 
+import com.example.study_gather.auth.comment.Comment;
+import com.example.study_gather.auth.comment.CommentQueryRepository;
+import com.example.study_gather.auth.comment.CommentRepository;
 import com.example.study_gather.category.Category;
 import com.example.study_gather.category.CategoryRepository;
 import com.example.study_gather.location.Location;
 import com.example.study_gather.location.LocationRepository;
 import com.example.study_gather.member.Member;
 import com.example.study_gather.member.MemberRepository;
-import com.example.study_gather.post.dto.CreatePostRequest;
-import com.example.study_gather.post.dto.CreatePostResponse;
-import com.example.study_gather.post.dto.FilterPostRequest;
-import com.example.study_gather.post.dto.FilterPostResponse;
+import com.example.study_gather.post.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,7 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final PostQueryRepository postQueryRepository;
     private final MemberRepository memberRepository;
+    private final CommentQueryRepository commentQueryRepository;
 
     @Transactional
     public CreatePostResponse createPost(CreatePostRequest request, Long memberId) {
@@ -56,10 +57,11 @@ public class PostService {
         return CreatePostResponse.toCreatePostResponse(post);
     }
 
-    public PostResponse getDetailPost(Long postId) {
+    public PostDetailResponse getDetailPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
-        return PostResponse.toPostResponse(post);
+        List<Comment> comments = commentQueryRepository.findByPostId(postId);
+        return PostDetailResponse.toPostDetailResponse(post, comments);
     }
 
     public FilterPostResponse filterPost(List<Long> locationIds,
