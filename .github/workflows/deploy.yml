@@ -1,0 +1,33 @@
+name: Deploy to EC2 on Push
+
+on:
+  push:
+    branches:
+      - main  # 푸시 브랜치 지정 (master라면 변경)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Actions 러너 OS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # 리포지토리 코드 체크아웃
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}  # Secrets에서 키 로드
+
+      - name: Add host to known_hosts
+        run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts  # 호스트 인증
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            cd ${{ secrets.PROJECT_DIR }} &&  # 프로젝트 디렉토리로 이동
+            git pull origin main &&  # 최신 코드 pull
+            chmod +x gradlew &&  # gradlew 권한 부여 (필요 시)
+            ./gradlew clean build &&  # 빌드 (clean으로 이전 빌드 지움)
+            pkill java || true &&  # 기존 Java 프로세스 중지 (없으면 무시)
+            nohup java -jar build/libs/study-gather-0.0.1-SNAPSHOT.jar > app.log 2>&1 &  # 백그라운드 실행 (JAR 이름 프로젝트에 맞게 변경)
+          "
