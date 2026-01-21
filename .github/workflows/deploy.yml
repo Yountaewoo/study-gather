@@ -24,7 +24,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no   $$ {{ secrets.EC2_USER }}@ $${{ secrets.EC2_HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
             cd ${{ secrets.PROJECT_DIR }} &&
             git pull origin main &&
             chmod +x gradlew &&
