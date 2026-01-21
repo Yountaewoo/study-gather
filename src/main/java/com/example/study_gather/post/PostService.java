@@ -3,6 +3,7 @@ package com.example.study_gather.post;
 import com.example.study_gather.auth.comment.Comment;
 import com.example.study_gather.auth.comment.CommentQueryRepository;
 import com.example.study_gather.auth.comment.CommentRepository;
+import com.example.study_gather.auth.comment.dto.CommentResponse;
 import com.example.study_gather.category.Category;
 import com.example.study_gather.category.CategoryRepository;
 import com.example.study_gather.location.Location;
@@ -60,16 +61,19 @@ public class PostService {
     public PostDetailResponse getDetailPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
-        List<Comment> comments = commentQueryRepository.findByPostId(postId);
-        return PostDetailResponse.toPostDetailResponse(post, comments);
+        List<CommentResponse> commentResponses = commentQueryRepository.findByPostId(postId);
+
+        return PostDetailResponse.toPostDetailResponse(post, commentResponses);
     }
 
     public FilterPostResponse filterPost(List<Long> locationIds,
                                          List<Long> categoryIds,
                                          Integer minNumber,
                                          Integer maxNumber,
-                                         Boolean isOnline) {
-        List<Post> posts = postQueryRepository.searchPost(locationIds, categoryIds, minNumber, maxNumber, isOnline);
+                                         Boolean isOnline,
+                                         String searchWord,
+                                         Boolean isActive) {
+        List<Post> posts = postQueryRepository.searchPost(locationIds, categoryIds, minNumber, maxNumber, isOnline, searchWord, isActive);
         List<PostResponse> postResponseList = posts.stream()
                 .map(post -> {
                     PostResponse postResponse = PostResponse.toPostResponse(post);
@@ -77,5 +81,28 @@ public class PostService {
                 })
                 .toList();
         return new FilterPostResponse(postResponseList);
+    }
+
+    public PostListResponse getMyPost(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+        List<Post> myPosts = postRepository.findAllByMemberIdAndIsActiveTrueOrderByCreatedAtDesc(memberId);
+        List<PostResponse> postResponseList = myPosts.stream()
+                .map(post -> {
+                    PostResponse postResponse = PostResponse.toPostResponse(post);
+                    return postResponse;
+                })
+                .toList();
+        return new PostListResponse(postResponseList);
+    }
+
+    @Transactional
+    public void closePost(Long memberId, Long postId) {
+        Member member = memberRepository.findById(postId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
+        post.validateAuthor(member.getId());
+        post.deactivate();
     }
 }

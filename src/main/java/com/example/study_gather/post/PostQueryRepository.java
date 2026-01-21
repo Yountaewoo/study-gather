@@ -21,16 +21,35 @@ public class PostQueryRepository {
                                  List<Long> categoryIds,
                                  Integer minNumber,
                                  Integer maxNumber,
-                                 Boolean isOnline) {
+                                 Boolean isOnline,
+                                 String searchWord,
+                                 Boolean isActive) {
         return queryFactory
                 .selectFrom(post)
                 .where(
                         findByLocationIds(locationIds),
                         findByCategoryIds(categoryIds),
                         peopleRange(minNumber, maxNumber),
-                        findByIsOnline(isOnline)
+                        findByIsOnline(isOnline),
+                        searchWord(searchWord),
+                        isActive(isActive)
                 )
                 .fetch();
+    }
+
+    private BooleanExpression isActive(Boolean isActive) {
+        if (isActive == null) {
+            return null;
+        }
+        return post.isActive.eq(isActive);
+    }
+
+    private BooleanExpression searchWord(String searchWord) {
+        if (searchWord == null) {
+            return null;
+        }
+        return post.title.contains(searchWord)
+                .or(post.content.contains(searchWord));
     }
 
     private BooleanExpression findByLocationIds(List<Long> locationIds) {

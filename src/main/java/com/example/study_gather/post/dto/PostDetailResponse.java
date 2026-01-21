@@ -15,12 +15,12 @@ public record PostDetailResponse(
         String content,
         Integer maxNumber,
         Integer minNumber,
-        List<Comment> commentResponses,
+        List<CommentResponse> commentResponses,
         boolean isActive,
         LocalDate startDate,
         LocalDate endDate
 ) {
-    public static PostDetailResponse toPostDetailResponse(Post post, List<Comment> comments) {
+    public static PostDetailResponse toPostDetailResponse(Post post, List<CommentResponse> comments) {
         return new PostDetailResponse(
                 post.getId(),
                 post.getCategoryId(),

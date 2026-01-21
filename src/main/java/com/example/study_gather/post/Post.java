@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -61,5 +62,15 @@ public class Post extends BaseEntity {
         this.startDate = startDate;
         this.isActive = true;
         this.endDate = endDate;
+    }
+
+    public void validateAuthor(Long memberId) {
+        if (!this.memberId.equals(memberId)){
+            throw new NoSuchElementException("게시글의 작성자가 아닙니다.");
+        }
+    }
+
+    public void deactivate() {
+        this.isActive = false;
     }
 }
