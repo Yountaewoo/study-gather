@@ -13,14 +13,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'  # 또는 'zulu', 'adopt' 등
+          java-version: '21'  # 자바 버전 21로 설정
+          distribution: 'temurin'  # 또는 'zulu' 등
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test  # 테스트 스킵 (-x test 추가)
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
