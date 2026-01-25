@@ -1,17 +1,26 @@
 name: Deploy to EC2 on Push
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'  # 또는 'zulu', 'adopt' 등
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -24,11 +33,10 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+          scp -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=3 build/libs/study-gather-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.PROJECT_DIR }}/app.jar
+          ssh -o StrictHostKeyChecking=no -o ServerAliveInterval=60 -o ServerAliveCountMax=3 ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
             cd ${{ secrets.PROJECT_DIR }} &&
-            git pull origin main &&
-            chmod +x gradlew &&
-            ./gradlew clean build &&
+            git pull origin main &&  # 설정 파일 등 필요 시 pull (생략 가능)
             pkill java || true &&
-            nohup java -jar build/libs/study-gather-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+            nohup java -jar app.jar > app.log 2>&1 &
           "
