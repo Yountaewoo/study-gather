@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: ${SPRING_APP_NAME}
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO}
+
+jwt:
+  secret: ${JWT_SECRET}
+  issuer: ${JWT_ISSUER}
+  clockSkewSec: ${JWT_CLOCK_SKEW}
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT}
+
+    org.springframework.web: ${LOG_LEVEL_WEB}
+    org.springframework.web.servlet.DispatcherServlet: ${LOG_LEVEL_DISPATCHER}
+    org.springframework.web.servlet.handler: ${LOG_LEVEL_HANDLER}
+
+    org.hibernate.SQL: ${LOG_LEVEL_SQL}
+    org.hibernate.orm.jdbc.bind: ${LOG_LEVEL_BIND}

@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: study-gather
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/study-gather?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: youn
+    password: youn
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  secret: U+8/fMA3LhbzPteyPEEW3TFq5QVphbtIBQbCA0f9/7sDFWhfnkLVLbBUegjA9/MnwXcWA5jEmwdOTjCtL0QdeA==
+  issuer: study-gather
+  clockSkewSec: 60
+
+logging:
+  level:
+    root: INFO
+
+    # Spring MVC ??/?? ??
+    org.springframework.web: INFO
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
+    org.springframework.web.servlet.handler: DEBUG
+
+    # JPA / Hibernate SQL ??
+    org.hibernate.SQL: DEBUG
+
+    # Hibernate ???? ??? ??
+    org.hibernate.orm.jdbc.bind: TRACE
