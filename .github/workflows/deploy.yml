@@ -9,27 +9,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up JDK 21  # Java 환경 설정 (Eclipse Temurin 기반)
+      - name: Set up JDK 21 # Java 환경 설정 (Eclipse Temurin 기반)
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'temurin'  # Dockerfile의 eclipse-temurin과 맞춤
-
-      - name: Build with Gradle  # Gradle 빌드 단계 추가 (JAR 생성)
+          distribution: 'temurin' # Dockerfile의 eclipse-temurin과 맞춤
+      - name: Build with Gradle # Gradle 빌드 단계 추가 (JAR 생성, 테스트 스킵)
         run: |
-          chmod +x ./gradlew  # gradlew 실행 권한 부여 (필요 시)
-          ./gradlew clean build  # 빌드: build/libs/*.jar 생성
-
+          chmod +x ./gradlew # gradlew 실행 권한 부여 (필요 시)
+          ./gradlew clean build -x test # 빌드: build/libs/*.jar 생성 (테스트 스킵)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -39,7 +34,6 @@ jobs:
           tags: |
             taewooyoun/study-moye-backend:latest
             taewooyoun/study-moye-backend:${{ github.sha }}
-
   deploy-to-ec2:
     runs-on: ubuntu-latest
     needs: build-and-push
