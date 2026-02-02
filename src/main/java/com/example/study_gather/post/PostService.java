@@ -37,9 +37,10 @@ public class PostService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
-        member.validateAdminPermission();
+
         Category category = categoryRepository.findById(request.categoryId()).orElseThrow(
                 () -> new NoSuchElementException("해당하는 카테고리가 없습니다."));
+
         Location location = locationRepository.findById(request.locationId()).orElseThrow(
                 () -> new NoSuchElementException("해당하는 지역이 없습니다."));
 
