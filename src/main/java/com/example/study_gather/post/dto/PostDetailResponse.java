@@ -17,6 +17,7 @@ public record PostDetailResponse(
         Integer minNumber,
         List<CommentResponse> commentResponses,
         boolean isActive,
+        Long memberId,
         LocalDate startDate,
         LocalDate endDate
 ) {
@@ -31,6 +32,7 @@ public record PostDetailResponse(
                 post.getMinNumber(),
                 comments,
                 post.getIsActive(),
+                post.getMemberId(),
                 post.getStartDate(),
                 post.getEndDate());
     }
