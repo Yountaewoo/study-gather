@@ -17,11 +17,11 @@ public record PostDetailResponse(
         Integer minNumber,
         List<CommentResponse> commentResponses,
         boolean isActive,
-        Long memberId,
+        Boolean isAuthor,
         LocalDate startDate,
         LocalDate endDate
 ) {
-    public static PostDetailResponse toPostDetailResponse(Post post, List<CommentResponse> comments) {
+    public static PostDetailResponse toPostDetailResponse(Post post, boolean isAuthor, List<CommentResponse> comments) {
         return new PostDetailResponse(
                 post.getId(),
                 post.getCategoryId(),
@@ -32,7 +32,7 @@ public record PostDetailResponse(
                 post.getMinNumber(),
                 comments,
                 post.getIsActive(),
-                post.getMemberId(),
+                isAuthor,
                 post.getStartDate(),
                 post.getEndDate());
     }

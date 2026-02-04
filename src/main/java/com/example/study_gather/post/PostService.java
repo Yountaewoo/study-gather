@@ -58,12 +58,16 @@ public class PostService {
 
         return CreatePostResponse.toCreatePostResponse(post);
     }
-    public PostDetailResponse getDetailPost(Long postId) {
+
+    public PostDetailResponse getDetailPost(Long postId, Long memberId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
         List<CommentResponse> commentResponses = commentQueryRepository.findByPostId(postId);
 
-        return PostDetailResponse.toPostDetailResponse(post, commentResponses);
+        if (post.getMemberId() == memberId) {
+            return PostDetailResponse.toPostDetailResponse(post, true, commentResponses);
+        }
+        return PostDetailResponse.toPostDetailResponse(post, false, commentResponses);
     }
 
     public FilterPostResponse filterPost(List<Long> locationIds,

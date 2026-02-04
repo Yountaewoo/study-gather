@@ -24,8 +24,9 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostDetailResponse getDetailPost(@PathVariable Long postId) {
-        return postService.getDetailPost(postId);
+    public PostDetailResponse getDetailPost(@PathVariable Long postId, @AuthenticationPrincipal JwtProvider.JwtUserPrincipal principal) {
+        Long memberId = (principal != null) ? principal.getMemberId() : null;
+        return postService.getDetailPost(postId, memberId);
     }
 
     @GetMapping
