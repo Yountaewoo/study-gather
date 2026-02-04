@@ -34,20 +34,20 @@ public class PostService {
 
     @Transactional
     public CreatePostResponse createPost(CreatePostRequest request, Long memberId) {
-
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
 
         Category category = categoryRepository.findById(request.categoryId()).orElseThrow(
                 () -> new NoSuchElementException("해당하는 카테고리가 없습니다."));
 
-        Location location = locationRepository.findById(request.locationId()).orElseThrow(
-                () -> new NoSuchElementException("해당하는 지역이 없습니다."));
+        Long locationId = request.isOnline() ? null :
+                locationRepository.findById(request.locationId()).orElseThrow(
+                        () -> new NoSuchElementException("해당하는 지역이 없습니다.")).getId();
 
         Post post = postRepository.save(new Post(
                 category.getId(),
                 member.getId(),
-                location.getId(),
+                locationId,
                 request.title(),
                 request.maxNumber(),
                 request.minNumber(),
@@ -58,7 +58,6 @@ public class PostService {
 
         return CreatePostResponse.toCreatePostResponse(post);
     }
-
     public PostDetailResponse getDetailPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
