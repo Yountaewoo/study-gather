@@ -125,6 +125,6 @@ public class PostService {
 
         post.validateAuthor(memberId);
 
-        post.deactivate();
+        post.deletePost();
     }
 }
