@@ -34,9 +34,6 @@ public class PostService {
 
     @Transactional
     public CreatePostResponse createPost(CreatePostRequest request, Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
-
         Category category = categoryRepository.findById(request.categoryId()).orElseThrow(
                 () -> new NoSuchElementException("해당하는 카테고리가 없습니다."));
 
@@ -46,7 +43,7 @@ public class PostService {
 
         Post post = postRepository.save(new Post(
                 category.getId(),
-                member.getId(),
+                memberId,
                 locationId,
                 request.title(),
                 request.maxNumber(),
@@ -88,8 +85,6 @@ public class PostService {
     }
 
     public PostListResponse getMyPost(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
         List<Post> myPosts = postRepository.findAllByMemberIdAndIsActiveTrueOrderByCreatedAtDesc(memberId);
         List<PostResponse> postResponseList = myPosts.stream()
                 .map(post -> {
@@ -102,24 +97,21 @@ public class PostService {
 
     @Transactional
     public void closePost(Long memberId, Long postId) {
-        Member member = memberRepository.findById(postId).orElseThrow(
-                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
-        post.validateAuthor(member.getId());
+        post.validateAuthor(memberId);
         post.deactivate();
     }
 
     @Transactional
     public PostDetailResponse updatePost(Long memberId, Long postId, UpdatePostRequest updatePostRequest) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
 
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
 
         List<CommentResponse> commentResponses = commentQueryRepository.findByPostId(post.getId());
-        post.validateAuthor(member.getId());
+
+        post.validateAuthor(memberId);
 
         post.updatePost(updatePostRequest);
 
