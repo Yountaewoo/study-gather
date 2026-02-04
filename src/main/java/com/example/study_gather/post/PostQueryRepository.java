@@ -32,9 +32,14 @@ public class PostQueryRepository {
                         peopleRange(minNumber, maxNumber),
                         findByIsOnline(isOnline),
                         searchWord(searchWord),
-                        isActive(isActive)
+                        isActive(isActive),
+                        isDeleted(false)
                 )
                 .fetch();
+    }
+
+    private BooleanExpression isDeleted(Boolean isDeleted) {
+        return post.isDeleted.eq(false);
     }
 
     private BooleanExpression isActive(Boolean isActive) {
