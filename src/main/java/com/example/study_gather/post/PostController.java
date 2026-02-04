@@ -52,7 +52,7 @@ public class PostController {
         postService.closePost(memberId, postId);
     }
 
-    @PutMapping("{postId}")
+    @PutMapping("/update/{postId}")
     public PostDetailResponse updatePost(@PathVariable Long postId,
                                          @RequestBody UpdatePostRequest updatePostRequest,
                                          @AuthenticationPrincipal JwtProvider.JwtUserPrincipal principal) {
