@@ -51,4 +51,12 @@ public class PostController {
         Long memberId = principal.getMemberId();
         postService.closePost(memberId, postId);
     }
+
+    @PutMapping("{postId}")
+    public PostDetailResponse updatePost(@PathVariable Long postId,
+                                         @RequestBody UpdatePostRequest updatePostRequest,
+                                         @AuthenticationPrincipal JwtProvider.JwtUserPrincipal principal) {
+        Long memberId = principal.getMemberId();
+        return postService.updatePost(memberId, postId, updatePostRequest);
+    }
 }

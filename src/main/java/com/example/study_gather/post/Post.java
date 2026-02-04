@@ -1,6 +1,7 @@
 package com.example.study_gather.post;
 
 import com.example.study_gather.common.config.BaseEntity;
+import com.example.study_gather.post.dto.UpdatePostRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -65,12 +66,24 @@ public class Post extends BaseEntity {
     }
 
     public void validateAuthor(Long memberId) {
-        if (!this.memberId.equals(memberId)){
+        if (!this.memberId.equals(memberId)) {
             throw new NoSuchElementException("게시글의 작성자가 아닙니다.");
         }
     }
 
     public void deactivate() {
         this.isActive = false;
+    }
+
+    public void updatePost(UpdatePostRequest request) {
+        this.categoryId = request.categoryId();
+        this.locationId = request.locationId();
+        this.title = request.title();
+        this.isOnline = request.isOnline();
+        this.maxNumber = request.maxNumber();
+        this.minNumber = request.minNumber();
+        this.content = request.content();
+        this.startDate = request.startDate();
+        this.endDate = request.endDate();
     }
 }

@@ -109,4 +109,20 @@ public class PostService {
         post.validateAuthor(member.getId());
         post.deactivate();
     }
+
+    @Transactional
+    public PostDetailResponse updatePost(Long memberId, Long postId, UpdatePostRequest updatePostRequest) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 사용자가 없습니다."));
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
+
+        List<CommentResponse> commentResponses = commentQueryRepository.findByPostId(post.getId());
+        post.validateAuthor(member.getId());
+
+        post.updatePost(updatePostRequest);
+
+        return PostDetailResponse.toPostDetailResponse(post, true, commentResponses);
+    }
 }

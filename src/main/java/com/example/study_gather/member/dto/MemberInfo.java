@@ -2,6 +2,7 @@ package com.example.study_gather.member.dto;
 
 import com.example.study_gather.member.Gender;
 import com.example.study_gather.member.Member;
+import com.example.study_gather.member.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public record MemberInfo(Long memberId,
                          String nickname,
                          String memberImage,
                          Gender gender,
+                         Role role,
                          LocalDate memberBirth,
                          LocalDateTime createdTime) {
 
@@ -24,6 +26,7 @@ public record MemberInfo(Long memberId,
                 member.getNickname(),
                 member.getMemberImage(),
                 member.getGender(),
+                member.getRole(),
                 member.getBirth(),
                 member.getCreatedAt());
     }
