@@ -50,6 +50,9 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private LocalDate endDate;
 
+    @Column(nullable = false)
+    private Boolean isDeleted;
+
     public Post(Long categoryId, Long memberId, Long locationId, String title, Integer maxNumber, Integer minNumber, Boolean isOnline,
                 String content, LocalDate startDate, LocalDate endDate) {
         this.categoryId = categoryId;
@@ -63,6 +66,7 @@ public class Post extends BaseEntity {
         this.startDate = startDate;
         this.isActive = true;
         this.endDate = endDate;
+        this.isDeleted = false;
     }
 
     public void validateAuthor(Long memberId) {
@@ -85,5 +89,9 @@ public class Post extends BaseEntity {
         this.content = request.content();
         this.startDate = request.startDate();
         this.endDate = request.endDate();
+    }
+
+    public void deletePost() {
+        this.isDeleted = true;
     }
 }

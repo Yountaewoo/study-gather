@@ -59,4 +59,11 @@ public class PostController {
         Long memberId = principal.getMemberId();
         return postService.updatePost(memberId, postId, updatePostRequest);
     }
+
+    @PutMapping("/delete/{postId}")
+    public void deletePost(@PathVariable Long postId,
+                           @AuthenticationPrincipal JwtProvider.JwtUserPrincipal principal) {
+        Long memberId = principal.getMemberId();
+        postService.deletePost(memberId,postId);
+    }
 }

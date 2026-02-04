@@ -117,4 +117,14 @@ public class PostService {
 
         return PostDetailResponse.toPostDetailResponse(post, true, commentResponses);
     }
+
+    @Transactional
+    public void deletePost(Long memberId, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NoSuchElementException("해당하는 게시글이 없습니다."));
+
+        post.validateAuthor(memberId);
+
+        post.deactivate();
+    }
 }
